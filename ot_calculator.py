@@ -29,16 +29,10 @@ def calculate_ot(employee_name, hourly_rate,day, ot_time_start, ot_time_end):
     
     start_time_decimal = start_hour + (start_minute / 60)
     end_time_decimal = end_hour + (end_minute / 60)
-    print("start_time_decimal:", start_time_decimal)
-    print("end_time_decimal:", end_time_decimal)
 
     ot_hours = end_time_decimal - start_time_decimal
-    print(ot_hours)
     ot_rate = get_ot_rate(day, ot_time_start, ot_time_end)
     ot_pay = hourly_rate * ot_hours * ot_rate
-    print(ot_rate)
-    print(ot_pay)
-    print("===========")
     return {
         "พนักงาน": employee_name,
         "วัน": day,
@@ -48,7 +42,38 @@ def calculate_ot(employee_name, hourly_rate,day, ot_time_start, ot_time_end):
         "ค่า OT": ot_pay
     }
     
-result_A = calculate_ot("สมชาย", 100, "จันทร์", "18:00", "20:00")
-result_B = calculate_ot("สมชาย", 100, "เสาร์", "18:00", "20:00")
-print(result_A)
-print(result_B)
+
+def calculate_total_ot(employee_name, hourly_rate, ot_periods):
+    total_ot_pay = 0
+    ot_details = []
+    
+    for day, start_time, end_time in ot_periods:
+        result = calculate_ot(employee_name, hourly_rate, day,start_time, end_time)
+        ot_details.append(result)
+        total_ot_pay += result["ค่า OT"]
+    
+    return {
+        "พนักงาน": employee_name,
+        "รายละเอียด OT": ot_details,
+        "ค่า OT รวม": total_ot_pay
+    }
+    
+employee_a_name = "นาย A"
+employee_a_hourly_rate = 100
+employee_a_ot_periods = [
+  ("จันทร์","18:00", "19:00"),
+  ("จันทร์","21:00", "22:00") 
+]
+result_a = calculate_total_ot(employee_a_name, employee_a_hourly_rate, employee_a_ot_periods)
+print("ผลลัพธ์สำหรับพนักงาน A:")
+print(f"ค่า OT รวม: {result_a['ค่า OT รวม']} บาท")
+
+
+employee_b_name = "นาย B"
+employee_b_hourly_rate = 150
+employee_b_ot_periods = [
+  ("จันทร์","19:00", "21:00") 
+]
+result_b = calculate_total_ot(employee_b_name, employee_b_hourly_rate, employee_b_ot_periods)
+print("ผลลัพธ์สำหรับพนักงาน B:")
+print(f"ค่า OT รวม: {result_b['ค่า OT รวม']} บาท")
