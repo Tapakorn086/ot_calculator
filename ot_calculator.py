@@ -41,6 +41,8 @@ def calculate_ot(employee_name, hourly_rate,day, ot_time_start, ot_time_end):
     print("===========")
     return {
         "พนักงาน": employee_name,
+        "วัน": day,
+        "เวลา": f"{ot_time_start}-{ot_time_end}",
         "จำนวนชั่วโมง OT": ot_hours,
         "อัตรา OT": ot_rate,
         "ค่า OT": ot_pay
